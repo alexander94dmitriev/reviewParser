@@ -8,14 +8,16 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
-#GET method to parse LendingTree review pages
-#Returns: a list of reviews (title, text, reviewer name and review date) in JSON format
-#Else: throws an error and exists gracefully
+# GET method to parse LendingTree review pages
+# Returns: a list of reviews (title, text, reviewer name and review date) in JSON format
+# Else: throws an error and exists gracefully
 @app.route('/reviews/<path:path>', methods=['GET'])
 def get_reviews_list(path):
     logging.info("***Started parsing reviews list***")
     uri = "https://www.lendingtree.com/reviews/" + path
     response = requests.get("https://www.lendingtree.com/reviews/" + path)
+    if response is None or response.content is None or response.status_code is not 200:
+        raise NotFound
     content = response.content
     reviews = build_reviews_data(content)
     json_resp = {"response": reviews}
