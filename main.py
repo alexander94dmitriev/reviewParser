@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 def get_reviews_list(path):
     logging.info("***Started parsing reviews list***")
     uri = "https://www.lendingtree.com/reviews/" + path
-    response = requests.get("https://www.lendingtree.com/reviews/" + path)
+    response = requests.get(uri)
     if response is None or response.content is None or response.status_code is not 200:
         raise NotFound
     content = response.content
